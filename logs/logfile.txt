@@ -1,0 +1,75 @@
+11/20 - 17:7:28
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/opportunities/
+HTTP status code: 200
+================================
+11/20 - 17:7:28
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================
+11/20 - 17:7:28
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================
+11/20 - 17:7:29
+Page Name: Limited Submissions page
+URL: www.washington.edu/research/funding/limited-submissions/
+HTTP status code: 200
+================================
+11/20 - 17:7:33
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================
+11/20 - 17:7:33
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================
+11/20 - 17:7:33
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/opportunities/
+HTTP status code: 200
+================================
+11/20 - 17:7:34
+Page Name: Limited Submissions page
+URL: www.washington.edu/research/funding/limited-submissions/
+HTTP status code: 200
+================================
+11/20 - 17:7:38
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================
+11/20 - 17:7:38
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================
+11/20 - 17:7:38
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/opportunities/
+HTTP status code: 200
+================================
+11/20 - 17:7:39
+Page Name: Limited Submissions page
+URL: www.washington.edu/research/funding/limited-submissions/
+HTTP status code: 200
+================================
+11/20 - 17:7:43
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/opportunities/
+HTTP status code: 200
+================================
+11/20 - 17:7:43
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================
+11/20 - 17:7:43
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================

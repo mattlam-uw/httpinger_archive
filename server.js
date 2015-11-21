@@ -1,35 +1,35 @@
 // Node.js Module Dependencies
-var http = require('http');
+var http = require('http'); // Used to make HTTP requests
+var fs = require('fs');     // Used for reading and writing to local system files
 
-// Constant representing ping frequency in seconds. This may later be put in a
-// config file.
-const PING_FREQ = 10;
+// Define constants. These may later be placed in a config file.
+const PING_FREQ = 5;                  // Request round frequency in seconds
+const LOG_FILE_PATH = './logs/';   // Path to log files
+const LOG_FILE_NAME = 'logfile.txt';  // File name for log file
 
 // Define set of urls to ping as an array of objects. This will later be put in
 // a separate file
 var urls = [
     { name: 'Research home page', host: 'www.washington.edu', path: '/research/' },
-    { name: 'Limited Submissions page', host: 'www.washington.edu', path: '/research/funding/limiterd-submissions/' },
+    { name: 'Limited Submissions page', host: 'www.washington.edu', path: '/research/funding/limited-submissions/' },
     { name: 'Funding Opportunities page', host: 'www.washington.edu', path: '/research/funding/opportunities/' },
     { name: 'Stats and Rankings page', host: 'www.washington.edu', path: '/research/spotlight/ranking/' }
 ];
 
 // Function to run through and ping all defined urls
-function pingUrls(arrUrls) {
-    // Output the time for this batch of ping requests and a divider line to
-    // separate the batches
+function pingUrls() {
+    // Notify via STDOUT that a ping round is being executed and time of ping round
     var currentTime = getTime();
-    console.log('================');
-    console.log(currentTime);
+    console.log(currentTime + ' - request round executed.');
 
     // Iterate through the array of objects containing the URLs to ping and
     // send a request for each URL
-    for (var i = 0; i < arrUrls.length; i++) {
+    for (var i = 0; i < urls.length; i++) {
         // Generate request options
-        var options = generateOptions(arrUrls[i].host, arrUrls[i].path);
+        var options = generateOptions(urls[i].host, urls[i].path);
         // Generate request callback
-        var fullUrl = arrUrls[i].host + arrUrls[i].path;
-        var callback = generateCallback(arrUrls[i].name, fullUrl)
+        var fullUrl = urls[i].host + urls[i].path;
+        var callback = generateCallback(urls[i].name, fullUrl)
         // Send the request
         var req = http.request(options, callback);
         req.end();
@@ -49,6 +49,7 @@ function generateCallback(urlName, fullUrl) {
     return function(res) {
         // Output the response body (web page code)
         var pageData = '';
+        var logOutput = '';
         res.on('data', function(data) {
             // In case of status code 200, do nothing. Because of the way
             // streaming works in node.js, you must listen for and consume
@@ -62,13 +63,23 @@ function generateCallback(urlName, fullUrl) {
         });
         // Indicate end of log
         res.on('end', function() {
+            var currentTime = getTime();
+
+            logOutput += currentTime + '\n';
             // Log the response header info
-            console.log('----------------');
-            console.log('Page Name:', urlName);
-            console.log('URL:', fullUrl);
-            // console.log('HTTP headers:', res.headers);
-            console.log('HTTP status code:', res.statusCode);
-            if (pageData) console.log(pageData.toString());
+            // logOutput += '--------------------------------' + '\n';
+            logOutput += 'Page Name: ' + urlName + '\n';
+            logOutput += 'URL: ' + fullUrl + '\n';
+            // logOutput += 'HTTP headers: ' + res.headers + '\n';
+            logOutput += 'HTTP status code: ' + res.statusCode + '\n';
+            if (pageData) logOutput += pageData.toString() + '\n';
+            logOutput += '================================\n';
+
+            // Write output to a file
+            var logFilePath = LOG_FILE_PATH + LOG_FILE_NAME;
+            fs.appendFile(logFilePath, logOutput, function(err) {
+                if (err) return console.log(err);
+            });
         });
     };
 }
@@ -84,12 +95,5 @@ function getTime() {
     return dateTime;
 }
 
-// Wrapper function around the call to send requests for the URLs. This is
-// needed for use with setInterval as that method only allows a reference
-// to a function rather than a call to the function itself.
-function ping() {
-    pingUrls(urls);
-}
-
 // Send a batch of requests every [PING_FREQ] seconds
-var pingInterval = setInterval(ping, (PING_FREQ * 1000));
+var pingInterval = setInterval(pingUrls, (PING_FREQ * 1000));
