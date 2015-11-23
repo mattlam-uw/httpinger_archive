@@ -11,7 +11,7 @@ const LOG_FILE_NAME = 'logfile.txt';  // File name for log file
 // a separate file
 var urls = [
     { name: 'Research home page', host: 'www.washington.edu', path: '/research/' },
-    { name: 'Limited Submissions page', host: 'www.washington.edu', path: '/research/funding/limited-submissions/' },
+    { name: 'Limited Submissions page', host: 'www.washington.edu', path: '/research/funding/limiterd-submissions/' },
     { name: 'Funding Opportunities page', host: 'www.washington.edu', path: '/research/funding/opportunities/' },
     { name: 'Stats and Rankings page', host: 'www.washington.edu', path: '/research/spotlight/ranking/' }
 ];
@@ -26,7 +26,7 @@ function pingUrls() {
     // send a request for each URL
     for (var i = 0; i < urls.length; i++) {
         // Generate request options
-        var options = generateOptions(urls[i].host, urls[i].path);
+        var options = generateOptions(urls[i].host, urls[i].path, 'HEAD');
         // Generate request callback
         var fullUrl = urls[i].host + urls[i].path;
         var callback = generateCallback(urls[i].name, fullUrl)
@@ -37,8 +37,9 @@ function pingUrls() {
 }
 
 // Function to generate options to be used for http.request
-function generateOptions(host, path) {
+function generateOptions(host, path, method) {
     return {
+        method: method,
         host: host,
         path: path
     };
@@ -60,6 +61,13 @@ function generateCallback(urlName, fullUrl) {
             if (res.statusCode !== 200) {
                 pageData += data;
             }
+            if (pageData) {
+                var logFilePath = LOG_FILE_PATH + LOG_FILE_NAME;
+                fs.appendFile(logFilePath, pageData, function(err) {
+                    if (err) return console.log(err);
+                })
+            }
+            pageData = '';
         });
         // Indicate end of log
         res.on('end', function() {
@@ -67,7 +75,6 @@ function generateCallback(urlName, fullUrl) {
 
             logOutput += currentTime + '\n';
             // Log the response header info
-            // logOutput += '--------------------------------' + '\n';
             logOutput += 'Page Name: ' + urlName + '\n';
             logOutput += 'URL: ' + fullUrl + '\n';
             // logOutput += 'HTTP headers: ' + res.headers + '\n';
