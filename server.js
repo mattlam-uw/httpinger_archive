@@ -28,8 +28,7 @@ function pingUrls() {
         // Generate request options
         var options = generateOptions(urls[i].host, urls[i].path, 'HEAD');
         // Generate request callback
-        var fullUrl = urls[i].host + urls[i].path;
-        var callback = generateCallback(urls[i].name, fullUrl)
+        var callback = generateCallback(urls[i].name, urls[i].host, urls[i].path);
         // Send the request
         var req = http.request(options, callback);
         req.end();
@@ -46,7 +45,7 @@ function generateOptions(host, path, method) {
 }
 
 // Function to generate a callback to be used for http.request
-function generateCallback(urlName, fullUrl) {
+function generateCallback(urlName, urlHost, urlPath) {
     return function(res) {
         // Output the response body (web page code)
         var pageData = '';
@@ -76,7 +75,7 @@ function generateCallback(urlName, fullUrl) {
             logOutput += currentTime + '\n';
             // Log the response header info
             logOutput += 'Page Name: ' + urlName + '\n';
-            logOutput += 'URL: ' + fullUrl + '\n';
+            logOutput += 'URL: ' + urlHost + urlPath + '\n';
             // logOutput += 'HTTP headers: ' + res.headers + '\n';
             logOutput += 'HTTP status code: ' + res.statusCode + '\n';
             if (pageData) logOutput += pageData.toString() + '\n';
