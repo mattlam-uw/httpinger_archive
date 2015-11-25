@@ -21,7 +21,7 @@ function pingUrls() {
     if (!urls) {
         return;
     }
-    
+
     // Notify via STDOUT that a ping round is being executed and time of ping round
     var currentTimeReadable = getTime(true);
     var currentTimeCompact = getTime(false);
