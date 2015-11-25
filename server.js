@@ -9,15 +9,19 @@ const LOG_FILE_NAME = 'logfile.txt'; // File name for standard log file
 
 // Define set of urls to ping as an array of objects. This will later be put in
 // a separate file
-var urls = [
-    { name: 'Research home page', host: 'www.washington.edu', path: '/research/' },
-    { name: 'Limited Submissions page', host: 'www.washington.edu', path: '/research/funding/limited-submissions/' },
-    { name: 'Funding Opportunities page', host: 'www.washington.edu', path: '/research/funding/bopportunities/' },
-    { name: 'Stats and Rankings page', host: 'www.washington.edu', path: '/research/spotlight/ranking/' }
-];
+var urls;
+fs.readFile('./data/urls.json', 'utf8', function(err, data) {
+    if (err) throw err;
+    urls = JSON.parse(data);
+});
 
 // Function to run through and ping all defined urls
 function pingUrls() {
+    // Don't do anything if urls have not yet been loaded from JSON file
+    if (!urls) {
+        return;
+    }
+    
     // Notify via STDOUT that a ping round is being executed and time of ping round
     var currentTimeReadable = getTime(true);
     var currentTimeCompact = getTime(false);
