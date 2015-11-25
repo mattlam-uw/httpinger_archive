@@ -54,21 +54,25 @@ function generateCallback(urlName, urlHost, urlPath, method) {
         // Output the response body (web page code)
         var pageData = '';
         var logOutput = '';
-        res.on('data', function(data) {
-            // The way streaming works in node.js, you must listen for and
-            // consume the response data in order for the response 'end' event to
-            // be fired. See http://stackoverflow.com/questions/23817180/
-            // So it's necessary to listen for the 'data' event even in cases
-            // where we will not be doing anything with the data
 
-            // When status code is greater than or equal to 400, then execute
-            // a follow-up full request to capture the page text, which may
-            // contain useful error code text. The response for the follow-up
-            // request will be logged in a separate file.
-            if (res.statusCode >= 400) {
-                console.log('Found an error');
-                // Check for type of request (HEAD only or full GET)
-                if (method == 'HEAD') {
+        // The way streaming works in node.js, you must listen for and consume 
+        // the response data in order for the response 'end' event to be fired. 
+        res.on('data', function(data) {    
+            pageData += data;
+        });
+
+        // Upon response completion, kick off a follow-up request if needed and
+        // log the response info
+        res.on('end', function() {
+            var currentTime = getTime();
+
+            // If the request method is HEAD, then do a follow-up GET request
+            // if the status code was >= 400. In all cases, log the output from
+            // the response.
+            if (method == 'HEAD') {
+                
+                // Follow-up request in event of status code >= 400
+                if (res.statusCode >= 400) {
                     console.log('Error on HEAD request');
                     // In cases where it is a HEAD request, send to follow-up
                     // full request to get the full page
@@ -78,40 +82,34 @@ function generateCallback(urlName, urlHost, urlPath, method) {
                     var fullReq = http.request(fullReqOptions, fullReqCallback);
                     fullReq.end();
                     console.log('Follow-up request sent');
-                } else if (method == 'GET') {
-                    console.log('Getting data back from the GET request');
-                    // IN case where the method is full GET then we want to
-                    // capture the page data so it can be logged
-                    pageData += data;
                 }
-            }
-            // lf we have page data, then log it
-            if (pageData) {
+
+                // Log request results
+                logOutput += currentTime + '\n';
+                // Log the response header info
+                logOutput += 'Page Name: ' + urlName + '\n';
+                logOutput += 'URL: ' + urlHost + urlPath + '\n';
+                // logOutput += 'HTTP headers: ' + res.headers + '\n';
+                logOutput += 'HTTP status code: ' + res.statusCode + '\n';
+                if (pageData) logOutput += pageData.toString() + '\n';
+                logOutput += '================================\n';
+
+                // Write request results to a file
+                var logFilePath = LOG_FILE_PATH + LOG_FILE_NAME;
+                fs.appendFile(logFilePath, logOutput, function(err) {
+                    if (err) return console.log(err);
+                });
+            
+            // If the request method is GET, this was a follow-up request for 
+            // a pull page. Log this in a separate file.
+            } else if (method == 'GET') {
+                pageData += '\n';
+                pageData += '================================\n'
                 var logFilePath = LOG_FILE_PATH + LOG_ERR_PAGE_FILE_NAME;
                 fs.appendFile(logFilePath, pageData, function(err) {
                     if (err) return console.log(err);
-                })
+                });
             }
-            pageData = '';
-        });
-        // Indicate end of log
-        res.on('end', function() {
-            var currentTime = getTime();
-
-            logOutput += currentTime + '\n';
-            // Log the response header info
-            logOutput += 'Page Name: ' + urlName + '\n';
-            logOutput += 'URL: ' + urlHost + urlPath + '\n';
-            // logOutput += 'HTTP headers: ' + res.headers + '\n';
-            logOutput += 'HTTP status code: ' + res.statusCode + '\n';
-            if (pageData) logOutput += pageData.toString() + '\n';
-            logOutput += '================================\n';
-
-            // Write output to a file
-            var logFilePath = LOG_FILE_PATH + LOG_FILE_NAME;
-            fs.appendFile(logFilePath, logOutput, function(err) {
-                if (err) return console.log(err);
-            });
         });
     };
 }
