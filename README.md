@@ -11,6 +11,6 @@
 | ~~3~~ | ~~As a user, I want to be able to specify a constant value to represent how often the ping rounds occur.~~ |
 | ~~4~~ | ~~As a user, I want ping results to be written to a log file (not just output to stdout).~~ |
 | ~~5~~ | ~~As a user, I want to be able to see the response page data returned for status code 4xx and 5xx responses.~~ |
-| ~~6^^ | ~~As a developer, I want all of the url data to be stored in a separate JSON file, which can function as the model up to the point of porting to a database.~~ |
+| ~~6~~ | ~~As a developer, I want all of the url data to be stored in a separate JSON file, which can function as the model up to the point of porting to a database.~~ |
 | ~~7~~ | ~~As a developer, I want the bulk of requests to be for headers only in order to increase overall speed and efficiency of the application.~~ |
 | ~~8~~ | ~~As a developer, I want to send full page GET requests only in cases where the HEAD request returned a status code of 400 or greater in order to increase efficiency of the application.~~ |
