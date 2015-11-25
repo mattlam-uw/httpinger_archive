@@ -21,7 +21,7 @@ var urls = [
 // Function to run through and ping all defined urls
 function pingUrls() {
     // Notify via STDOUT that a ping round is being executed and time of ping round
-    var currentTime = getTime();
+    var currentTime = getTime(true);
     console.log(currentTime + ' - request round executed.');
 
     // Iterate through the array of objects containing the URLs to ping and
@@ -54,6 +54,7 @@ function generateCallback(urlName, urlHost, urlPath, method) {
         // Output the response body (web page code)
         var pageData = '';
         var logOutput = '';
+        var logFilePath = '';
 
         // The way streaming works in node.js, you must listen for and consume 
         // the response data in order for the response 'end' event to be fired. 
@@ -64,7 +65,7 @@ function generateCallback(urlName, urlHost, urlPath, method) {
         // Upon response completion, kick off a follow-up request if needed and
         // log the response info
         res.on('end', function() {
-            var currentTime = getTime();
+            var currentTime = getTime(true);
 
             // If the request method is HEAD, then do a follow-up GET request
             // if the status code was >= 400. In all cases, log the output from
@@ -95,19 +96,19 @@ function generateCallback(urlName, urlHost, urlPath, method) {
                 logOutput += '================================\n';
 
                 // Write request results to a file
-                var logFilePath = LOG_FILE_PATH + LOG_FILE_NAME;
+                logFilePath = LOG_FILE_PATH + LOG_FILE_NAME;
                 fs.appendFile(logFilePath, logOutput, function(err) {
                     if (err) return console.log(err);
+                    return null;
                 });
             
             // If the request method is GET, this was a follow-up request for 
             // a pull page. Log this in a separate file.
             } else if (method == 'GET') {
-                pageData += '\n';
-                pageData += '================================\n'
-                var logFilePath = LOG_FILE_PATH + LOG_ERR_PAGE_FILE_NAME;
+                logFilePath = LOG_FILE_PATH + 'blah' + getTime(false) + '.txt';
                 fs.appendFile(logFilePath, pageData, function(err) {
                     if (err) return console.log(err);
+                    return null;
                 });
             }
         });
@@ -115,15 +116,25 @@ function generateCallback(urlName, urlHost, urlPath, method) {
 }
 
 // Function to return the current date and time as a string
-function getTime() {
+function getTime(includeSpaces) {
     var currentDate = new Date();
-    var dateTime = (currentDate.getMonth() + 1) + "/"
-        + currentDate.getDate() + " - "
-        + currentDate.getHours() + ":"
-        + currentDate.getMinutes() + ":"
-        + currentDate.getSeconds();
-    return dateTime;
+    var currentMonth = currentDate.getMonth() + 1;
+    if (includeSpaces) {
+        return '' + currentDate.getFullYear()
+            + currentMonth
+            + currentDate.getDate() + " - "
+            + currentDate.getHours() + ":"
+            + currentDate.getMinutes() + ":"
+            + currentDate.getSeconds();
+    } else {
+        return '' + currentDate.getFullYear()
+            + currentMonth
+            + currentDate.getDate() + '-'
+            + currentDate.getHours()
+            + currentDate.getMinutes()
+            + currentDate.getSeconds();
+    }
 }
 
-// Send a batch of requests every [PING_FREQ] seconds
+// Send a round of requests every [PING_FREQ] seconds
 var pingInterval = setInterval(pingUrls, (PING_FREQ * 1000));
