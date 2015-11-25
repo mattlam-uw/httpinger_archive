@@ -3,9 +3,11 @@ var http = require('http'); // Used to make HTTP requests
 var fs = require('fs');     // Used for reading and writing to local system files
 
 // Define constants. These may later be placed in a config file.
-const PING_FREQ = 5;                  // Request round frequency in seconds
-const LOG_FILE_PATH = './logs/';   // Path to log files
-const LOG_FILE_NAME = 'logfile.txt';  // File name for log file
+const PING_FREQ = 5;                 // Request round frequency in seconds
+const LOG_FILE_PATH = './logs/';     // Path to log files
+const LOG_FILE_NAME = 'logfile.txt'; // File name for standard log file
+// File name for log of page text resulting in error
+const LOG_ERR_PAGE_FILE_NAME = 'log_err_page_file.txt';
 
 // Define set of urls to ping as an array of objects. This will later be put in
 // a separate file
@@ -25,10 +27,12 @@ function pingUrls() {
     // Iterate through the array of objects containing the URLs to ping and
     // send a request for each URL
     for (var i = 0; i < urls.length; i++) {
+        var reqMethod = 'HEAD'; // Method of http request to be sent
         // Generate request options
-        var options = generateOptions(urls[i].host, urls[i].path, 'HEAD');
+        var options = generateOptions(urls[i].host, urls[i].path, reqMethod);
         // Generate request callback
-        var callback = generateCallback(urls[i].name, urls[i].host, urls[i].path);
+        var callback = generateCallback(urls[i].name, urls[i].host,
+            urls[i].path, reqMethod);
         // Send the request
         var req = http.request(options, callback);
         req.end();
@@ -45,23 +49,45 @@ function generateOptions(host, path, method) {
 }
 
 // Function to generate a callback to be used for http.request
-function generateCallback(urlName, urlHost, urlPath) {
+function generateCallback(urlName, urlHost, urlPath, method) {
     return function(res) {
         // Output the response body (web page code)
         var pageData = '';
         var logOutput = '';
         res.on('data', function(data) {
-            // In case of status code 200, do nothing. Because of the way
-            // streaming works in node.js, you must listen for and consume
-            // that response data in order for the response 'end' event to
+            // The way streaming works in node.js, you must listen for and
+            // consume the response data in order for the response 'end' event to
             // be fired. See http://stackoverflow.com/questions/23817180/
+            // So it's necessary to listen for the 'data' event even in cases
+            // where we will not be doing anything with the data
 
-            // When status code is not 200, then capture the response payload
-            if (res.statusCode !== 200) {
-                pageData += data;
+            // When status code is greater than or equal to 400, then execute
+            // a follow-up full request to capture the page text, which may
+            // contain useful error code text. The response for the follow-up
+            // request will be logged in a separate file.
+            if (res.statusCode >= 400) {
+                console.log('Found an error');
+                // Check for type of request (HEAD only or full GET)
+                if (method == 'HEAD') {
+                    console.log('Error on HEAD request');
+                    // In cases where it is a HEAD request, send to follow-up
+                    // full request to get the full page
+                    var fullReqOptions = generateOptions(urlHost, urlPath, 'GET');
+                    var fullReqCallback = generateCallback(urlName, urlHost,
+                            urlPath, 'GET');
+                    var fullReq = http.request(fullReqOptions, fullReqCallback);
+                    fullReq.end();
+                    console.log('Follow-up request sent');
+                } else if (method == 'GET') {
+                    console.log('Getting data back from the GET request');
+                    // IN case where the method is full GET then we want to
+                    // capture the page data so it can be logged
+                    pageData += data;
+                }
             }
+            // lf we have page data, then log it
             if (pageData) {
-                var logFilePath = LOG_FILE_PATH + LOG_FILE_NAME;
+                var logFilePath = LOG_FILE_PATH + LOG_ERR_PAGE_FILE_NAME;
                 fs.appendFile(logFilePath, pageData, function(err) {
                     if (err) return console.log(err);
                 })
