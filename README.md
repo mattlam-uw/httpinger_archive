@@ -2,9 +2,10 @@
 # Backlog
 | ID  | Story |
 | --- | ----- |
-| 10 | As a user, I want to be able to view overall request stats in a web page user interface. |
-| 11 | As a user, I want to be able to view info around the urls being pinged in a web page user interface. |
-| 12 | As a user, I want to be able to modify the name, host, and url information for urls being pinged in a web page user interface. |
+| 10 | As a developer, I want to put a layer of abstraction around all CRUD calls for files so that I can more easily adapt to database if needed in the future |
+| 11 | As a user, I want to be able to view overall request stats in a web page user interface. |
+| 12 | As a user, I want to be able to view info around the urls being pinged in a web page user interface. |
+| 13 | As a user, I want to be able to modify the name, host, and url information for urls being pinged in a web page user interface. |
 | ~~1~~ | ~~As a user, I want to be able to periodically ping a specified URL and have all response codes logged to a specified file.~~ |
 | ~~2~~ | ~~As a user, I want to be able to specify more than one URL to periodically ping.~~ |
 | ~~3~~ | ~~As a user, I want to be able to specify a constant value to represent how often the ping rounds occur.~~ |

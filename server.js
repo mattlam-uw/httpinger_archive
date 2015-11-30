@@ -4,18 +4,18 @@ var fs = require('fs');     // Used for reading and writing to local system file
 // Require local modules
 // Module containing all functions used for creating http requests
 var httping = require('./modules/httping.js');
+var urlsIO = require('./modules/urlsIO.js');
 
 
 // Define constants. These may later be placed in a config file.
-const PING_FREQ = 5;                 // Request round frequency in seconds
+const PING_FREQ = 5;  // Request round frequency in seconds
 
 
-// Load URL data from JSON file. Once URL data is loaded then start sending
-// requests.
+// Retrieve all URL data needed for making requests
 var urls;
-fs.readFile('./data/urls.json', 'utf8', function(err, data) {
-    if (err) throw err;
-    urls = JSON.parse(data);
+urlsIO.getUrls(function(urlData) {
+    urls = urlData;
+
     // Send a round of requests every [PING_FREQ] seconds
     var pingInterval = setInterval(pingUrlHelper, (PING_FREQ * 1000));
 });

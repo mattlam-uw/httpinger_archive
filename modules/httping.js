@@ -7,12 +7,12 @@ const LOG_FILE_PATH = './logs/';     // Path to log files
 const LOG_FILE_NAME = 'logfile.txt'; // File name for standard log file
 
 // Function to run through and ping all defined urls
-exports.pingUrls = function(urls) {
+exports.pingUrls = function(arrUrls) {
     // Don't do anything if no parameter values provided
-    if (!urls) {
+    if (!arrUrls) {
         return;
     }
-
+    
     // Notify via STDOUT that a ping round is being executed and time of ping round
     var currentTimeReadable = getTime(true);
     var currentTimeCompact = getTime(false);
@@ -21,13 +21,13 @@ exports.pingUrls = function(urls) {
 
     // Iterate through the array of objects containing the URLs to ping and
     // send a request for each URL
-    for (var i = 0; i < urls.length; i++) {
+    for (var i = 0; i < arrUrls.length; i++) {
         var reqMethod = 'HEAD'; // Method of http request to be sent
         // Generate request options
-        var options = generateOptions(urls[i].host, urls[i].path, reqMethod);
+        var options = generateOptions(arrUrls[i].host, arrUrls[i].path, reqMethod);
         // Generate request callback
-        var callback = generateCallback(urls[i].name, urls[i].host,
-            urls[i].path, reqMethod, currentTimeReadable, currentTimeCompact);
+        var callback = generateCallback(arrUrls[i].name, arrUrls[i].host,
+            arrUrls[i].path, reqMethod, currentTimeReadable, currentTimeCompact);
         // Send the request
         var req = http.request(options, callback);
         req.end();
@@ -70,7 +70,6 @@ function generateCallback(urlName, urlHost, urlPath, method,
                 
                 // Follow-up request in event of status code >= 400
                 if (res.statusCode >= 400) {
-                    console.log('Error on HEAD request');
                     // In cases where it is a HEAD request, send to follow-up
                     // full request to get the full page
                     var fullReqOptions = generateOptions(urlHost, urlPath, 'GET');
@@ -78,7 +77,6 @@ function generateCallback(urlName, urlHost, urlPath, method,
                             urlPath, 'GET', readableTime, compactTime);
                     var fullReq = http.request(fullReqOptions, fullReqCallback);
                     fullReq.end();
-                    console.log('Follow-up request sent');
                 }
 
                 // Log request results
