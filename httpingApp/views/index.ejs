@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html ng-app="httpingApp">
+<head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+    <script src="/modules/angular.js"></script>
+    <script src="/modules/angular-route.js"></script>
+    <script src="/modules/angular-resource.js"></script>
+    <script src="/modules/jquery.js"></script>
+    <script src="/modules/bootstrap.js"></script>
+
+    <link href="/modules/bootstrap.css" rel="stylesheet" />
+    <link href="/modules/bootstrap-theme.css" rel="stylesheet" />
+    <link href="/stylesheets/style.css" rel="stylesheet"/>
+
+    <!-------------------------------------------------------------------------
+      AngularJS Module definition and related services, routes, and controllers
+    -------------------------------------------------------------------------->
+    <script>
+        angular.module('httpingApp', ['ngRoute', 'ngResource']);
+    </script>
+    <script src="/ngRoutes/httpingRoutes.js"></script>
+    <script src="/ngControllers/httpingController.js"></script>
+</head>
+<body>
+     <ng-view></ng-view>
+</body>
 </html>
