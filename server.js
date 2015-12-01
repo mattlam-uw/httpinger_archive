@@ -7,6 +7,7 @@
  * Internal Module Dependencies
  *  + ./modules/httping.js
  *  + ./modules/urlsIO.js
+ *  + ./modules/logIO.js
  *
  */
 
@@ -16,6 +17,7 @@ var fs = require('fs');     // Used for reading and writing to local system file
 // Require local modules
 var httping = require('./modules/httping.js');
 var urlsIO = require('./modules/urlsIO.js');
+var logIO = require('./modules/logIO.js');
 
 // Define constants. These may later be placed in a config file.
 const PING_FREQ = 5;  // Request round frequency in seconds
@@ -24,6 +26,7 @@ const PING_FREQ = 5;  // Request round frequency in seconds
 // we can ensure it is asynchronously assigned data before we attempt to use
 // the data
 var urls;
+var files;
 
 /**
  * Callback function to be passed with call to getUrls(). This function will
@@ -49,3 +52,9 @@ urlsIO.getUrls(cbGetUrlData);
 function pingUrlHelper() {
     httping.pingUrls(urls);
 }
+
+// Test out retrieval of request error stats
+logIO.getReqErrStats('./logs/', function(data) {
+    files = data;
+    console.log(files);
+})
