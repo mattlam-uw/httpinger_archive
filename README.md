@@ -1,10 +1,18 @@
 # HTTPinger
-# Backlog
+## Dependencies
+* node.js (version 0.10.29 or later)
+## Installation and Setup
+1. Clone this repo
+2. CD . . .
+3. $ node server.js
+4. In browser, navigate to http://localhost:3000/
+## Backlog
 | ID  | Story |
 | --- | ----- |
-| 11 | As a user, I want to be able to view overall request stats in a web page user interface. |
-| 12 | As a user, I want to be able to view info around the urls being pinged in a web page user interface. |
-| 13 | As a user, I want to be able to modify the name, host, and url information for urls being pinged in a web page user interface. |
+| 11 | As a Developer, I want to store result counts from requests in a separate JSON file for use in future graphical user interface. |
+| 12 | As a user, I want to be able to view overall request stats in a web page user interface. |
+| 13 | As a user, I want to be able to view info around the urls being pinged in a web page user interface. |
+| 14 | As a user, I want to be able to modify the name, host, and url information for urls being pinged in a web page user interface. |
 | ~~1~~ | ~~As a user, I want to be able to periodically ping a specified URL and have all response codes logged to a specified file.~~ |
 | ~~2~~ | ~~As a user, I want to be able to specify more than one URL to periodically ping.~~ |
 | ~~3~~ | ~~As a user, I want to be able to specify a constant value to represent how often the ping rounds occur.~~ |
