@@ -26,7 +26,6 @@ const PING_FREQ = 5;  // Request round frequency in seconds
 // we can ensure it is asynchronously assigned data before we attempt to use
 // the data
 var urls;
-var files;
 
 /**
  * Callback function to be passed with call to getUrls(). This function will
@@ -54,7 +53,40 @@ function pingUrlHelper() {
 }
 
 // Test out retrieval of request error stats
-logIO.getReqErrStats('./logs/', function(data) {
-    files = data;
-    console.log(files);
-})
+
+// Path for log files
+var logFilePath = './logs/';
+
+// Callback for retrieving request error stats
+var cbGetReqErrStats = function(data) {
+    // Object for recording the error stats
+    var reqStats = {};
+
+    // Iterate over the files returned from fs.readdir looking for files that
+    // begin with 'err', then parse the status code out of the file name and
+    // add the file to the stats
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].substr(0, 3) == 'err') {
+            // Parse the status code
+            var statusCode = data[i].substr(4, 3);
+            // If a subobject for the status code exists, then add stats to it
+            if (reqStats[statusCode]) {
+                reqStats[statusCode].count++;
+                reqStats[statusCode].files.push(data[i]);
+            // Otherwise, create a subobject for the status code and add stats
+            } else {
+                reqStats[statusCode] = {};
+                reqStats[statusCode].count = 1;
+                reqStats[statusCode].files = [data[i]];
+            }
+        }
+    }
+
+    // Iterate over the error stats object and output the counts for each code
+    for (var statusCode in reqStats) {
+        console.log('Status Code ' + statusCode + ': ' + reqStats[statusCode].count);
+    }
+}
+
+// Retrieve the request error stats, passing the file path and callback
+logIO.getReqErrStats(logFilePath, cbGetReqErrStats);
