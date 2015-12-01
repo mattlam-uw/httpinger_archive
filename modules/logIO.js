@@ -42,3 +42,4 @@ function createReqLogEntry(readableTime, urlName, urlHost, urlPath, statusCode) 
         + 'HTTP status code: ' + statusCode + '\n'
         + '================================\n';
 };
+

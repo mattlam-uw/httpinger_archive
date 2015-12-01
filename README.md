@@ -9,11 +9,11 @@
 3. $ node server.js
 4. In browser, navigate to http://localhost:3000/
 
-## Backlog
+## Story Backlog
 | ID  | Story |
 | --- | ----- |
-| 11 | As a Developer, I want to store result counts from requests in a separate JSON file for use in future graphical user interface. |
-| 12 | As a user, I want to be able to view overall request stats in a web page user interface. |
+| 11 | As a user, I want to be able to view overall request stats in a web page user interface. |
+| 12 | As a user, I want to be able to drill into any request that resulted in error (status code >= 400) and view the full html returned. |
 | 13 | As a user, I want to be able to view info around the urls being pinged in a web page user interface. |
 | 14 | As a user, I want to be able to modify the name, host, and url information for urls being pinged in a web page user interface. |
 | ~~1~~ | ~~As a user, I want to be able to periodically ping a specified URL and have all response codes logged to a specified file.~~ |
