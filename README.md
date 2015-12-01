@@ -2,7 +2,6 @@
 # Backlog
 | ID  | Story |
 | --- | ----- |
-| 10 | As a developer, I want to put a layer of abstraction around all CRUD calls for files so that I can more easily adapt to database if needed in the future |
 | 11 | As a user, I want to be able to view overall request stats in a web page user interface. |
 | 12 | As a user, I want to be able to view info around the urls being pinged in a web page user interface. |
 | 13 | As a user, I want to be able to modify the name, host, and url information for urls being pinged in a web page user interface. |
@@ -15,3 +14,4 @@
 | ~~7~~ | ~~As a developer, I want the bulk of requests to be for headers only in order to increase overall speed and efficiency of the application.~~ |
 | ~~8~~ | ~~As a developer, I want to send full page GET requests only in cases where the HEAD request returned a status code of 400 or greater in order to increase efficiency of the application.~~ |
 | ~~9~~ | ~~As a developer, I want to organize the code such that related methods are kept in a dedicated module in order to improve codebase navigability.~~ |
+| ~~10~~ | ~~As a developer, I want to put a layer of abstraction around all CRUD calls for files so that I can more easily adapt to database if needed in the future.~~ |

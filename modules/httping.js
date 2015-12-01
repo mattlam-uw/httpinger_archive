@@ -14,9 +14,12 @@
 var http = require('http'); // Used to make HTTP requests
 var fs = require('fs');     // Used for reading and writing to local system files
 
+// Require local modules
+var logIO = require('./logIO.js');
+
 // Define constants. These may later be placed in a config file.
 const LOG_FILE_PATH = './logs/';     // Path to log files
-const LOG_FILE_NAME = 'header_request_log.txt'; // File name for standard log file
+const REQ_LOG_FILE_NAME = 'header_request_log.txt'; // File name for standard log file
 
 // Function to run through and ping all defined urls
 exports.pingUrls = function(arrUrls) {
@@ -64,8 +67,8 @@ function generateCallback(urlName, urlHost, urlPath, method,
     return function(res) {
         // Output the response body (web page code)
         var pageData = '';
-        var logOutput = '';
-        var logFilePath = '';
+        var reqLogEntry = '';
+        var reqLogFilePath = '';
         var noSpaceName = removeNonAlpha(urlName);
 
         // The way streaming works in node.js, you must listen for and consume 
@@ -92,32 +95,17 @@ function generateCallback(urlName, urlHost, urlPath, method,
                     http.request(fullReqOptions, fullReqCallback).end();
                 }
 
-                // Log the 'HEAD' request results
-                logOutput += readableTime + '\n';
-                logOutput += 'Page Name: ' + urlName + '\n';
-                logOutput += 'URL: ' + urlHost + urlPath + '\n';
-                logOutput += 'HTTP status code: ' + res.statusCode + '\n';
-                if (pageData) logOutput += pageData.toString() + '\n';
-                logOutput += '================================\n';
-
-                // Write request results to a file
-                logFilePath = LOG_FILE_PATH + LOG_FILE_NAME;
-                fs.appendFile(logFilePath, logOutput, function(err) {
-                    if (err) return console.log(err);
-                    return null;
-                });
+                // Write the log entry to the general log file
+                logIO.writeReqLogEntry(LOG_FILE_PATH, REQ_LOG_FILE_NAME,
+                    readableTime, urlName, urlHost, urlPath, res.statusCode);
             
             // If the request method is GET, this was a follow-up request for 
             // a full page. Log this in a separate file. Each follow-up request
             // gets its own file. The name of the file will be:
             // "err-[timestamp]-[name for URL].html
             } else if (method == 'GET') {
-                logFilePath = LOG_FILE_PATH + 'err-' + compactTime + '-'
-                    + noSpaceName + '.html';
-                fs.appendFile(logFilePath, pageData, function(err) {
-                    if (err) return console.log(err);
-                    return null;
-                });
+                logIO.writeErrLogEntry(LOG_FILE_PATH, compactTime, noSpaceName,
+                    pageData, res.statusCode);
             }
         });
     };
