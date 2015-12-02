@@ -5,15 +5,14 @@
  Main httping Controller
  ----------------------------------------------------------------------------*/
 angular.module('httpingApp')
-.controller('HttpingCtrl', ['$scope',
-    function($scope) {
+.controller('HttpingCtrl', ['$scope', 'Urls',
+    function($scope, Urls) {
 
         /*-----------------------------------------------------------------------
          Initialize $scope variables
          ------------------------------------------------------------------------*/
-
-        $scope.urls = 'Blex';
-
+        // $scope.urls = 'Blah';
+        $scope.urls = Urls.query();
 
         /*-------------------------------------------------------------------------
          Event Handlers
