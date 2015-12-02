@@ -1,5 +1,5 @@
 /**
- * Errors model
+ * Errors Model
  *
  * This model provides data around requests that have generated an error. This
  * data is stored in a JavaScript object that is built by scanning and
