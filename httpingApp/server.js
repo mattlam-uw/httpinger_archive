@@ -19,6 +19,7 @@ var urlsIO = require('./modules/urlsIO.js');
 
 // Define constants. These may later be placed in a config file.
 const PING_FREQ = 5;  // Request round frequency in seconds
+const LOG_FILE_PATH = './logs/';     // Path to log files
 
 // Define the urls variables outside of the functions that use the variable so
 // we can ensure it is asynchronously assigned data before we attempt to use
@@ -51,10 +52,12 @@ function pingUrlHelper() {
 }
 
 // Test out use of Errors model
-var Errors = require('./models/Errors.js');
-console.log('Errors referenced from server: ', Errors);
+var errorsModel = require('./models/Errors.js');
 
 // Iterate over the error stats object and output the counts for each code
-for (var statusCode in Errors.errors) {
-    console.log('Status Code ' + statusCode + ': ' + Errors.errors[statusCode].count);
-}
+errorsModel.getReqErrStats(LOG_FILE_PATH, function(errors) {
+	for (var statusCode in errors) {
+	    console.log('Status Code ' + statusCode + ': ' + errors[statusCode].count);
+	}
+});
+

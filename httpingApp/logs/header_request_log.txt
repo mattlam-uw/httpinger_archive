@@ -168,3 +168,38 @@ Page Name: Limited Submissions page
 URL: www.washington.edu/research/funding/limited-submissions/
 HTTP status code: 200
 ================================
+2015122 - 8:38:11
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/bopportunities/
+HTTP status code: 404
+================================
+2015122 - 8:38:11
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================
+2015122 - 8:38:11
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================
+2015122 - 8:38:11
+Page Name: Limited Submissions page
+URL: www.washington.edu/research/funding/limited-submissions/
+HTTP status code: 200
+================================
+2015122 - 8:38:16
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/bopportunities/
+HTTP status code: 404
+================================
+2015122 - 8:38:16
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================
+2015122 - 8:38:16
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================

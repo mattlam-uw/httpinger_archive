@@ -12,58 +12,45 @@
 // Node.js Module Dependencies
 var fs = require('fs'); // Used for reading and writing to local system files
 
-// Path for log files
-var logFilePath = './logs/';
 
-// Object to store request error stats
-var errors = {};
+// Function reads the logs directory to retrieve file names. The file names are
+// then parsed to create an error object, which contains a property for each
+// error status code. Each of these properties in turn has properties 
+// representing the incidence count for the status code and an array of error
+// file names for the status code. The callback is used to provide this data
+// back to the client.
+exports.getReqErrStats = function(dirPath, callback) {
+    // Object to store request error stats
+    var errors = {};
 
-// Callback for retrieving request error stats. This provides the following
-// stats on http requests that resulted in a status code >= 400: (1) count
-// of requests with this code, and (2) filename for full page response for
-// each request
-var cbGetReqErrStats = function(data) {
+    fs.readdir(dirPath, function(err, fileNames) {
+        if (err) return console.log(err);
 
-    // Iterate over the files returned from fs.readdir looking for files that
-    // begin with 'err', then parse the status code out of the file name and
-    // add the file to the stats
-    for (var i = 0; i < data.length; i++) {
-        if (data[i].substr(0, 3) == 'err') {
-            // Parse the status code
-            var statusCode = data[i].substr(4, 3);
-            // If a subobject for the status code exists, then add stats to it
-            if (errors[statusCode]) {
-                errors[statusCode].count++;
-                errors[statusCode].files.push(data[i]);
-                // Otherwise, create a subobject for the status code and add stats
-            } else {
-                errors[statusCode] = {};
-                errors[statusCode].count = 1;
-                errors[statusCode].files = [data[i]];
+        // Iterate over the files returned from fs.readdir looking for files 
+        // that begin with 'err', then parse the status code out of the file 
+        // name and add the file to the stats
+        for (var i = 0; i < fileNames.length; i++) {
+            if (fileNames[i].substr(0, 3) == 'err') {
+                // Parse the status code
+                var statusCode = fileNames[i].substr(4, 3);
+                // If a subobject for the status code exists, then add stats 
+                // to it
+                if (errors[statusCode]) {
+                    errors[statusCode].count++;
+                    errors[statusCode].files.push(fileNames[i]);
+                    // Otherwise, create a subobject for the status code and 
+                    // add stats
+                } else {
+                    errors[statusCode] = {};
+                    errors[statusCode].count = 1;
+                    errors[statusCode].files = [fileNames[i]];
+                }
             }
         }
-    }
 
-    // console.log(errors);
-    // Now that the data has been all read, make it available
-    modExport();
-    module.exports = errors;
+        // Now the client callback can do something with the errors object
+        callback(errors);
+    });
 }
 
-// Function reads the logs directory, feeding the filenames retrieved to the
-// callback defined above.
-function getReqErrStats(dirPath, callback) {
-    fs.readdir(dirPath, function(err, data) {
-        if (err) return console.log(err);
-        callback(data);
-    })
-}
 
-// Retrieve the request error stats, passing the file path and callback. The
-// results will be stored in an object that will be made available via
-// module.exports
-getReqErrStats(logFilePath, cbGetReqErrStats);
-
-function modExport(){
-    module.exports = { 'blah': 'blee' };
-};
