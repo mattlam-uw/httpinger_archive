@@ -22,6 +22,7 @@ var fs = require('fs'); // Used for reading and writing to local system files
 exports.getReqErrStats = function(dirPath, callback) {
     // Object to store request error stats
     var errors = {};
+    var errors2 = [{"blah": "bloh"}, {"blah": "blee"}];
 
     fs.readdir(dirPath, function(err, fileNames) {
         if (err) return console.log(err);

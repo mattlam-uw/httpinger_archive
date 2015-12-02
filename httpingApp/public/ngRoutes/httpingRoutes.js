@@ -8,8 +8,6 @@ angular.module('httpingApp').config(function($routeProvider) {
         controller: 'HttpingCtrl'
     }, true);
 
-    // For #/urls
-
     // For any other URL, render httpingMain.html
     $routeProvider.otherwise({
         redirectTo: '/'
