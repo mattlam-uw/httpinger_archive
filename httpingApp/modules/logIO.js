@@ -43,11 +43,3 @@ function createReqLogEntry(readableTime, urlName, urlHost, urlPath, statusCode) 
         + '================================\n';
 };
 
-// Create a function that will (for now) provide stats on error results from
-// requests, showing counts for each type of error status code
-exports.getReqErrStats = function(dirPath, callback) {
-    fs.readdir(dirPath, function(err, data) {
-        if (err) return console.log(err);
-        callback(data);
-    })
-}

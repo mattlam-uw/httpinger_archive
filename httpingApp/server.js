@@ -7,7 +7,6 @@
  * Internal Module Dependencies
  *  + ./modules/httping.js
  *  + ./modules/urlsIO.js
- *  + ./modules/logIO.js
  *
  */
 
@@ -17,7 +16,6 @@ var fs = require('fs');     // Used for reading and writing to local system file
 // Require local modules
 var httping = require('./modules/httping.js');
 var urlsIO = require('./modules/urlsIO.js');
-var logIO = require('./modules/logIO.js');
 
 // Define constants. These may later be placed in a config file.
 const PING_FREQ = 5;  // Request round frequency in seconds
@@ -52,41 +50,11 @@ function pingUrlHelper() {
     httping.pingUrls(urls);
 }
 
-// Test out retrieval of request error stats
+// Test out use of Errors model
+var Errors = require('./models/Errors.js');
+console.log('Errors referenced from server: ', Errors);
 
-// Path for log files
-var logFilePath = './logs/';
-
-// Callback for retrieving request error stats
-var cbGetReqErrStats = function(data) {
-    // Object for recording the error stats
-    var reqStats = {};
-
-    // Iterate over the files returned from fs.readdir looking for files that
-    // begin with 'err', then parse the status code out of the file name and
-    // add the file to the stats
-    for (var i = 0; i < data.length; i++) {
-        if (data[i].substr(0, 3) == 'err') {
-            // Parse the status code
-            var statusCode = data[i].substr(4, 3);
-            // If a subobject for the status code exists, then add stats to it
-            if (reqStats[statusCode]) {
-                reqStats[statusCode].count++;
-                reqStats[statusCode].files.push(data[i]);
-            // Otherwise, create a subobject for the status code and add stats
-            } else {
-                reqStats[statusCode] = {};
-                reqStats[statusCode].count = 1;
-                reqStats[statusCode].files = [data[i]];
-            }
-        }
-    }
-
-    // Iterate over the error stats object and output the counts for each code
-    for (var statusCode in reqStats) {
-        console.log('Status Code ' + statusCode + ': ' + reqStats[statusCode].count);
-    }
+// Iterate over the error stats object and output the counts for each code
+for (var statusCode in Errors.errors) {
+    console.log('Status Code ' + statusCode + ': ' + Errors.errors[statusCode].count);
 }
-
-// Retrieve the request error stats, passing the file path and callback
-logIO.getReqErrStats(logFilePath, cbGetReqErrStats);

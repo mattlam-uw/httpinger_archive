@@ -108,3 +108,63 @@ Page Name: Research home page
 URL: www.washington.edu/research/
 HTTP status code: 200
 ================================
+2015121 - 16:25:31
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/bopportunities/
+HTTP status code: 404
+================================
+2015121 - 16:25:31
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================
+2015121 - 16:25:31
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================
+2015121 - 16:25:31
+Page Name: Limited Submissions page
+URL: www.washington.edu/research/funding/limited-submissions/
+HTTP status code: 200
+================================
+2015121 - 16:25:36
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/bopportunities/
+HTTP status code: 404
+================================
+2015121 - 16:28:40
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/bopportunities/
+HTTP status code: 404
+================================
+2015121 - 16:28:40
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================
+2015121 - 16:28:40
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================
+2015121 - 16:29:45
+Page Name: Funding Opportunities page
+URL: www.washington.edu/research/funding/bopportunities/
+HTTP status code: 404
+================================
+2015121 - 16:29:45
+Page Name: Research home page
+URL: www.washington.edu/research/
+HTTP status code: 200
+================================
+2015121 - 16:29:45
+Page Name: Stats and Rankings page
+URL: www.washington.edu/research/spotlight/ranking/
+HTTP status code: 200
+================================
+2015121 - 16:29:45
+Page Name: Limited Submissions page
+URL: www.washington.edu/research/funding/limited-submissions/
+HTTP status code: 200
+================================
