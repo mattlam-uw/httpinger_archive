@@ -1,6 +1,17 @@
 <div class="container-fluid">
-    <h1><a href="#/">HTTPinger</a></h1>
+    <h1>HTTPinger</h1>
     <div id="content">
         <h2>Instances for Status Code: {{statusCode}}</h2>
+        <table class="table table-striped table-condensed table-responsive">
+            <thead>
+                <th>#</th><th>Instance</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="error in errors">
+                    <td>$index</td>
+                    <td>{{error}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

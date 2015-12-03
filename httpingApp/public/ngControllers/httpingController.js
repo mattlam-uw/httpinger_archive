@@ -5,7 +5,7 @@
  Main httping Controller
  ----------------------------------------------------------------------------*/
 angular.module('httpingApp')
-.controller('HttpingCtrl', ['$scope', $routeParams, 'Urls', 'Errors',
+.controller('HttpingCtrl', ['$scope', '$routeParams', 'Urls', 'Errors',
     function($scope, $routeParams, Urls, Errors) {
 
         /*-----------------------------------------------------------------------
