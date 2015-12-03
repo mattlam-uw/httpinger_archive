@@ -11,4 +11,9 @@ angular.module('httpingApp')
             'update': { 'method': 'PUT' }
             }
         );
-    }]);
+    }])
+    .factory('StatusCodes', ['$resource', function($resource) {
+        return $resource('/errors/codes/:id', null, {
+            'update': { 'method': 'PUT' }
+        });
+    }])

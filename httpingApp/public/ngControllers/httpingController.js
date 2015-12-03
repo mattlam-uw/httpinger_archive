@@ -6,7 +6,7 @@
  ----------------------------------------------------------------------------*/
 angular.module('httpingApp')
 .controller('HttpingCtrl', ['$scope', '$routeParams', 'Urls', 'Errors',
-    function($scope, $routeParams, Urls, Errors) {
+        'StatusCodes', function($scope, $routeParams, Urls, Errors, StatusCodes) {
 
         /*-----------------------------------------------------------------------
          Initialize $scope variables
@@ -14,6 +14,9 @@ angular.module('httpingApp')
         // $scope.urls = 'Blah';
         $scope.urls = Urls.query();
         $scope.errors = Errors.query();
+        $scope.codes = StatusCodes.query();
+
+        console.log('Codes in Angular: ', $scope.codes);
 
         if ($routeParams.id) {
             $scope.statusCode = $routeParams.id;
