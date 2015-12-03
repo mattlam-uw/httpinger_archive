@@ -1,3 +1,3 @@
 .idea
-/httpingApp/logs/*
+httpingApp/logs/*
 node_modules/
