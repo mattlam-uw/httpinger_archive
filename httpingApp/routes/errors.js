@@ -33,7 +33,9 @@ router.get('/codes', function(req, res, next) {
 /* GET count for given status code */
 router.get('/:id/count', function(req, res, next) {
     Errors.getReqErrStats(LOG_FILE_DIR, function(errors) {
-         res.json(errors[req.params.id].count);
+        var result = [];
+        result.push(errors[req.params.id].count);
+        res.json(result);
     });
 });
 

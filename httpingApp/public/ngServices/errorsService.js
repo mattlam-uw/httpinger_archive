@@ -17,3 +17,8 @@ angular.module('httpingApp')
             'update': { 'method': 'PUT' }
         });
     }])
+    .factory('ErrorCount', ['$resource', function($resource) {
+        return $resource('/errors/:id/count', null, {
+            'update': { 'method': 'PUT' }
+        });
+    }]);
