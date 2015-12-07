@@ -12,13 +12,15 @@ angular.module('httpingApp')
         /*-----------------------------------------------------------------------
          Initialize $scope variables
          ------------------------------------------------------------------------*/
-        // $scope.urls = 'Blah';
         $scope.urls = Urls.query();
         $scope.errors = Errors.query();
-        $scope.count = ErrorCount.query();
+
 
         if ($routeParams.id) {
             $scope.statusCode = $routeParams.id;
+            $scope.count = 'blah';
+            // $scope.count = ErrorCount.query();
+            console.log(count);
         }
 
         /*-------------------------------------------------------------------------
